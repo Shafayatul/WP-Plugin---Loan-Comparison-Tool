@@ -32,13 +32,19 @@ function setting_lct(){
 			
 		update_option( 'lct_csv_ftp_link', $lct_csv_ftp_link);
 		update_option( 'lct_interval_hour', $lct_interval_hour);
+
+		// Downlaod from ftp
+		// $new_path = ABSPATH . 'wp-content/plugins/loan-comparison-tool/csv/';
+		$new_path = dirname(__FILE__).'/csv/downloaded.csv';
+		downloadUrlToFile($lct_csv_ftp_link, $new_path);
+
 		
 		$message = '<div id="message" class="updated notice is-dismissible"><p>Settings successfully<strong>saved</strong>.</p><button type="button" class="notice-dismiss"><span class="screen-reader-text">Dismiss this notice.</span></button></div>';
 	}else{
 		$lct_csv_ftp_link = get_option('lct_csv_ftp_link');
 		$lct_interval_hour = get_option('lct_interval_hour');
 	}
-		
+
 
 	echo '
 		<div class="wrap">
@@ -60,5 +66,26 @@ function setting_lct(){
 			
 		</div>
 	';
+}
 
+
+/**
+* download file from ftp
+*/
+function downloadUrlToFile($url, $path)
+{   
+    if(is_file($url)) {
+        copy($url, $path); 
+    } else {
+        $options = array(
+          CURLOPT_FILE    => fopen($path, 'w'),
+          CURLOPT_TIMEOUT =>  28800, // set this to 8 hours so we dont timeout on big files
+          CURLOPT_URL     => $url
+        );
+
+        $ch = curl_init();
+        curl_setopt_array($ch, $options);
+        curl_exec($ch);
+        curl_close($ch);
+    }
 }
