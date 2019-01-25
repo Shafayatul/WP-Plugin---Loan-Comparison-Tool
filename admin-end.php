@@ -34,12 +34,24 @@ function setting_lct(){
 		update_option( 'lct_interval_hour', $lct_interval_hour);
 
 		// Downlaod from ftp
-		// $new_path = ABSPATH . 'wp-content/plugins/loan-comparison-tool/csv/';
 		$new_path = dirname(__FILE__).'/csv/downloaded.csv';
 		downloadUrlToFile($lct_csv_ftp_link, $new_path);
 
+		// Read CSV file
+	    $handle = fopen($new_path, "r");
+	    while($data = fgetcsv($handle))//handling csv file 
+	    {
+	     echo $data[0];
+	     echo '<hr>';
+	    // echo $item1 = mysqli_real_escape_string($connect, $data[0]);  
+	                //$item2 = mysqli_real_escape_string($connect, $data[1]);
+	    		//insert data from CSV file 
+	                //$query = "INSERT into ts_excel(ts_name, ts_email) values('$item1','$item2')";
+	                //mysqli_query($connect, $query);
+	    }
+	    fclose($handle);
 		
-		$message = '<div id="message" class="updated notice is-dismissible"><p>Settings successfully<strong>saved</strong>.</p><button type="button" class="notice-dismiss"><span class="screen-reader-text">Dismiss this notice.</span></button></div>';
+		$message = '<div id="message" class="updated notice is-dismissible"><p>Settings successfully<strong> saved</strong>.</p><button type="button" class="notice-dismiss"><span class="screen-reader-text">Dismiss this notice.</span></button></div>';
 	}else{
 		$lct_csv_ftp_link = get_option('lct_csv_ftp_link');
 		$lct_interval_hour = get_option('lct_interval_hour');
