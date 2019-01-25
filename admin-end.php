@@ -1,22 +1,12 @@
 <?php
-
+ob_start();
 /**
 * Admin Menu
 */
 add_action('admin_menu', 'loan_menu');
  
 function loan_menu(){
-        add_menu_page( 'LOAN TOOL', 'LOAN TOOL', 'manage_options', 'setting-lct', 'setting_lct' );
-/*		add_submenu_page("club-member-main-cmr", "Pending Member", "Pending Member", 0, "pending-member", "pendingMemberFunction");
-		add_submenu_page("club-member-main-cmr", "Expire Member", "Expire Member", 0, "expire-member", "ExpiredMemberFunction");
-		add_submenu_page("club-member-main-cmr", "All Member", "All Member", 0, "all-member", "AllMemberFunction");
-		
-		// page for php use
-		add_submenu_page("", "Detail Member", "Detail Member", 0, "cmr-detail-member", "cmr_detail_member_func");
-		add_submenu_page("", "Delete Member", "Delete Member", 0, "cmr-delete-member", "cmr_delete_member_func");
-		add_submenu_page("", "Active Member", "Active Member", 0, "cmr-active-member", "cmr_active_member_func");
-		add_submenu_page("", "Edit Member", "Edit Member", 0, "cmr-edit-member", "cmr_edit_member_func");
-		add_submenu_page("", "Member Date Reset", "Member Date Reset", 0, "cmr-date-reset", "cmr_date_reset_func");*/
+    add_menu_page( 'LOAN TOOL', 'LOAN TOOL', 'manage_options', 'setting-lct', 'setting_lct' );
 }
 
 /**
