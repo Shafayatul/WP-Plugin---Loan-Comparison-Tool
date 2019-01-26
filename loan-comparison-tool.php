@@ -13,6 +13,10 @@ Text Domain: lct
 if ( ! defined( 'WPINC' ) ) {
 	die;
 }
+
+include 'admin-end.php';
+include 'user-end.php';
+
 register_activation_hook( __FILE__, 'pu_create_plugin_tables' );
 function pu_create_plugin_tables(){
 
