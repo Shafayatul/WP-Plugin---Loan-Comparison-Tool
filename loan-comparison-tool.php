@@ -17,7 +17,24 @@ if ( ! defined( 'WPINC' ) ) {
 include 'admin-end.php';
 include 'user-end.php';
 
-register_activation_hook( __FILE__, 'pu_create_plugin_tables' );
+
+
+
+// ajax used in front end
+add_action( 'init', 'lct_script_enqueuer');
+function lct_script_enqueuer() {
+    wp_register_script( "lct_js_front", plugin_dir_url( __FILE__ ).'js/lct_ajax.js', array('jquery') );
+    wp_localize_script( 'lct_js_front', 'lctAjax', 
+                        array( 
+                            'ajaxurl' => admin_url( 'admin-ajax.php' ),
+                            'ajax_nonce' => wp_create_nonce('ajax_csrf_check'),  
+                        ));
+    wp_enqueue_script('lct_js_front');
+}
+
+
+
+/*register_activation_hook( __FILE__, 'pu_create_plugin_tables' );
 function pu_create_plugin_tables(){
 
     global $wpdb;
@@ -118,4 +135,4 @@ function pu_create_plugin_tables(){
 			PRIMARY KEY (id)
 		);";
     $wpdb->query($query);
-}
+}*/
