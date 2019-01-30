@@ -7,8 +7,106 @@ add_action('admin_menu', 'loan_menu');
  
 function loan_menu(){
     add_menu_page( 'LOAN TOOL', 'LOAN TOOL', 'manage_options', 'setting-lct', 'setting_lct' );
+    add_submenu_page("setting-lct", "Data Show Option", "Data Show Option", 'manage_options', "data-show-option-lct", "data_show_option");
 }
 
+
+/**
+* data_show_option
+*/
+function data_show_option(){
+    global $wpdb;
+    $message = "";
+    $options = ['productID','Name','Lender','LenderProductName','ProductDetails','VariableRate','FixedRate','FixedPeriod','IntroDiscRate','IntroDiscPeriod','ApplicationFees','DischargeFees','OngoingFees','OngoingFeesCycle','ValuationFees','LendersLegalFees','LendersSettlementFees','MinLoanAmount','MaxLoanAmount','LVROOPurchaseMin','LVROOPurchaseMax','LVROOSecurityMin','LVROOSecurityMax','LVRINVPurchaseMin','LVRINVPurchaseMax','LVRINVSecurityMin','LVRINVSecurityMax','LVRLandMin','LVRLandMax','OwnerOccupied','Investment','RepaymentOption','GenuineSavingsMin','ACT','NSW','TAS','QLD','VIC','SA','WA','NT','StandardVariable','Fixed','InterestInAdvance','ReverseMortgage','Basic','NoDoc','LowDoc','Equity','Intro','CreditImpaired','ProfessionalPack','MinLoanTerm','MaxLoanTerm','RateDetails','FeeDetails','AutoAppvdCCard','BpayAccess','DebitCardAvailable','DirectCreditAccess','DirectDebitAccess','EFTPOSAccess','GiroPostAustPostAccess','InternetBanking','LOCCreditCardAutoSweep','MortgageOffsetAvailable','PhoneTransferAccess','RedrawDetails','RedrawFacility','TransactionAccountAvailable','EarlyRepayBreakCostDetails','EarlyRepaymentBreakCosts','LMIAvailable','LMICapitalisationMaxLVR','RateLockAvailable','BridgingAvailable','Construction','SelfManagedSuperfund','InterestCapitalisation','InterestCapitalisationDetails','RepaymentsCanMakeExtra','RepaymentsFortnightly','RepaymentsMonthly','RepaymentsWeekly','SalaryDirectAvailable','Portability','SplitAvailable','SplitDetails','omparisonRate'];
+
+
+
+    if(isset($_POST["lct_setting_submit"])){
+
+        //column name option
+        foreach ($options as $option) {
+            update_option( $option, $_POST[$option]);
+        }
+
+
+        // show or not option
+        $all_showing_options = "";
+        foreach ($_POST["showing_options_check"] as $showing_option) {
+            $all_showing_options .= $showing_option.',';
+        }
+        update_option( 'showing_options', $all_showing_options);
+
+
+        $message = '<div id="message" class="updated notice is-dismissible"><p>Settings successfully<strong> saved</strong>.</p><button type="button" class="notice-dismiss"><span class="screen-reader-text">Dismiss this notice.</span></button></div>';
+    }
+    $showing_options = get_option('showing_options');
+    $showing_options_array = explode(',', rtrim($showing_options, ','));
+
+
+?>
+<div class="wrap">
+    <h2>Set showing options</h2>
+    <br>
+    <br>
+    <?php echo $message;?>
+
+    <form action="<?php echo esc_url( $_SERVER['REQUEST_URI'] );?>" method="post">
+
+        <button name="lct_setting_submit" type="submit" class="page-title-action">Submit</button>
+        <br><br>
+        <table class="wp-list-table widefat fixed striped users">
+            <thead>
+                <tr>
+                    <td id="cb" class="manage-column column-cb check-column">
+                        <label class="screen-reader-text" for="cb-select-all-1">Select All</label>
+                        <input id="cb-select-all-1" type="checkbox">
+                    </td>
+                    <th scope="col" id="username" class="manage-column column-username column-primary sortable desc">
+                        <span>  Coumn name from database</span>
+                    </th>
+                    <th scope="col" id="name" class="manage-column column-name">User friendly name</th>
+                </tr>
+            </thead>
+
+            <tbody id="the-list" data-wp-lists="list:user">
+                <?php
+                foreach ($options as $option) {
+                ?>
+                <tr id="user-1">
+                    <th scope="row" class="check-column">
+                        <label class="screen-reader-text" for="user_1">Select admin</label>
+                        <input type="checkbox" name="showing_options_check[]" id="user_1" class="administrator" value="<?php echo $option;?>" <?php if(in_array($option, $showing_options_array)){ echo "checked";} ?> >
+                    </th>
+                    <td class="username column-username has-row-actions column-primary" data-colname="Username">
+                        <?php echo $option;?>
+                    </td>
+                    <td class="role column-role" data-colname="Role"><input type="text" name="<?php echo $option;?>" value="<?php echo get_option($option);?>"></td>
+                </tr>  
+                <?php
+                }
+                ?>
+         
+            </tbody>
+
+            <tfoot>
+                <tr>
+                <td class="manage-column column-cb check-column">
+                <label class="screen-reader-text" for="cb-select-all-2">Select All</label>
+                <input id="cb-select-all-2" type="checkbox">
+                </td>
+                <td scope="col" id="username" class="manage-column column-username column-primary sortable desc">
+                    <span>Coumn name from database</span>
+                </td>
+                <td scope="col" id="name" class="manage-column column-name">User friendly name</td>
+                </tr>
+            </tfoot>
+        </table>
+        <br><br>
+        <button name="lct_setting_submit" type="submit" class="page-title-action">Submit</button>
+    </form>
+</div>
+<?php
+}
 /**
 * Settings page
 */
@@ -18,10 +116,12 @@ function setting_lct(){
 	if(isset($_POST["lct_setting_submit"])){
 
 		$lct_csv_ftp_link = $_POST["lct_csv_ftp_link"];
-		$lct_interval_hour = $_POST["lct_interval_hour"];
+        $lct_interval_hour = $_POST["lct_interval_hour"];
+		$lct_number_of_result_to_show = $_POST["lct_number_of_result_to_show"];
 			
 		update_option( 'lct_csv_ftp_link', $lct_csv_ftp_link);
-		update_option( 'lct_interval_hour', $lct_interval_hour);
+        update_option( 'lct_interval_hour', $lct_interval_hour);
+		update_option( 'lct_number_of_result_to_show', $lct_number_of_result_to_show);
 
 		// Downlaod from ftp
 		$new_path = dirname(__FILE__).'/csv/downloaded.csv';
@@ -54,7 +154,8 @@ function setting_lct(){
 		$message = '<div id="message" class="updated notice is-dismissible"><p>Settings successfully<strong> saved</strong>.</p><button type="button" class="notice-dismiss"><span class="screen-reader-text">Dismiss this notice.</span></button></div>';
 	}else{
 		$lct_csv_ftp_link = get_option('lct_csv_ftp_link');
-		$lct_interval_hour = get_option('lct_interval_hour');
+        $lct_interval_hour = get_option('lct_interval_hour');
+		$lct_number_of_result_to_show = get_option('lct_number_of_result_to_show');
 	}
 
 
@@ -70,8 +171,12 @@ function setting_lct(){
 					<input name="lct_csv_ftp_link" type="text" class="regular-text myDatepicker" id="lct_csv_ftp_link" value="'.$lct_csv_ftp_link.'">
 					<br><br>
 					<label for="lct_interval_hour"  ><div class="text-left">Interval period in hour:</div></label>
-					<input name="lct_interval_hour" type="text" class="regular-text myDatepicker" id="lct_interval_hour" value="'.$lct_interval_hour.'">
+                    <input name="lct_interval_hour" type="text" class="regular-text myDatepicker" id="lct_interval_hour" value="'.$lct_interval_hour.'">
+                    <br><br>
+                    <label for="lct_number_of_result_to_show"  ><div class="text-left">Number of result to show:</div></label>
+					<input name="lct_number_of_result_to_show" type="text" class="regular-text myDatepicker" id="lct_number_of_result_to_show" value="'.$lct_number_of_result_to_show.'">
 					<br><br>
+
 
 					<button name="lct_setting_submit" type="submit" class="page-title-action">Submit</button>
 			</form>

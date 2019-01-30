@@ -31,10 +31,111 @@ function lct_script_enqueuer() {
                         ));
     wp_enqueue_script('lct_js_front');
 }
+// ajax in the admin end
+add_action( 'admin_enqueue_scripts', 'lct_script_enqueuer_admin');
+function lct_script_enqueuer_admin() {
+	wp_enqueue_script( 'lct-ajax-request', plugin_dir_url( __FILE__ ).'js/admin-ajax.js', array( 'jquery' ) );
+}
+
+/**
+* Schedule Work
+*/
+// Let's do an hourly check
+add_action('wp', 'activateMe');
+ 
+function activateMe() {
+	if ( !wp_next_scheduled( 'hourly_check' ) ) {
+		wp_schedule_event( current_time( 'timestamp' ), 'hourly', 'hourly_check');
+	}
+}
+ 
+add_action('hourly_check', 'lct_scheduled_scarp');
+ 
+function lct_scheduled_scarp() {
+	// do something every hour
+    add_option( 'myhack_extraction_length', '255', '', 'yes' );
+}
+
+/*get ajax result for available product*/
+add_action('wp_ajax_lct_get_available_product', 'lct_get_available_product');
+function lct_get_available_product() {  
+	ob_clean();
+
+	global $wpdb;
+	$table_name = $wpdb->prefix . 'lct_csv_datsdsa';
+
+	// check this address is his or not
+	$results = $wpdb->get_results("SELECT Name FROM $table_name ORDER By Name ASC", OBJECT); 
+	$products = [];
+	foreach ($results as $result) {
+		array_push($products, $result->Name);
+	}
+	$products = array_unique($products);
 
 
 
-/*register_activation_hook( __FILE__, 'pu_create_plugin_tables' );
+
+	$html = '<table class="form-table">
+			<tr class="user-display-name-wrap">
+			<th><label for="product-new">Select A Product: </label></th>
+			<td>
+			<select name="product-new" id="product-new">';
+	$html .= '<option value=""></option>';			
+	foreach ($products as $key => $value) {
+			$html .= '<option value="'.$value.'">'.$value.'</option>';		
+	}
+			
+	$html .= '</select>
+			</td>
+			</tr>
+			</tbody>
+			</table>';
+	echo $html;
+
+	die();		      //IT IS A MAST FOR WORDPRESS AJAX
+}
+
+/*get ajax result for available lender*/
+add_action('wp_ajax_lct_get_available_lender', 'lct_get_available_lender');
+function lct_get_available_lender() {  
+	ob_clean();
+
+	global $wpdb;
+	$table_name = $wpdb->prefix . 'lct_csv_datsdsa';
+
+	// check this address is his or not
+	$results = $wpdb->get_results("SELECT Lender FROM $table_name ORDER By Lender ASC", OBJECT); 
+	$lenders = [];
+	foreach ($results as $result) {
+		array_push($lenders, $result->Lender);
+	}
+	$lenders = array_unique($lenders);
+
+
+
+
+	$html = '<table class="form-table">
+			<tr class="user-display-name-wrap">
+			<th><label for="lender-new">Select A Lender: </label></th>
+			<td>
+			<select name="lender-new" id="lender-new">';
+	$html .= '<option value=""></option>';			
+	foreach ($lenders as $key => $value) {
+			$html .= '<option value="'.$value.'">'.$value.'</option>';		
+	}
+			
+	$html .= '</select>
+			</td>
+			</tr>
+			</tbody>
+			</table>';
+	echo $html;
+
+	die();		      //IT IS A MAST FOR WORDPRESS AJAX
+}
+
+/*
+register_activation_hook( __FILE__, 'pu_create_plugin_tables' );
 function pu_create_plugin_tables(){
 
     global $wpdb;
