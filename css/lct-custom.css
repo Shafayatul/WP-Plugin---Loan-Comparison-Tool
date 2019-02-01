@@ -9,3 +9,39 @@
 .lct-form-title{
 	color: white;
 }
+
+/*Search result page*/
+.product-link a, .product-link a:hover{
+	text-decoration: none;
+	color: #58B8B2;
+	font-weight: bolder;
+}
+.product-link a:link{
+	text-decoration: none;
+}
+.row-margin{
+    border-bottom: 1px solid black;
+    padding-bottom: 20px;
+    margin-bottom: 20px;
+}
+.panel-heading{
+    background-color: rgba(33,160,152,.75);
+    color: white;
+    font-weight: bold;
+}
+input[type="radio"] {
+  -webkit-appearance: checkbox; /* Chrome, Safari, Opera */
+  -moz-appearance: checkbox;    /* Firefox */
+  -ms-appearance: checkbox;     /* not currently supported */
+}
+.row-heading{
+	background-color: rgba(33,160,152,.75);
+	color: white;
+	font-weight: bolder;
+	text-align: center;
+}
+#compare-selected{
+display: flex;
+  align-items: center;
+  justify-content: center;
+}

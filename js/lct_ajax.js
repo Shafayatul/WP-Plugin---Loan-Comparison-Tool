@@ -1,5 +1,6 @@
 jQuery(document).ready(function(){
 
+
 	// Ajax for make primary address -- my account page
 	jQuery("#lct-search").click(function(){
 		jQuery.ajax({ //ajax request
