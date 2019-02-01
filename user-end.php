@@ -7,81 +7,78 @@ function lct_show_form( $atts ){
 	<link rel="stylesheet" type="text/css" href="<?php echo plugin_dir_url( __FILE__ ) . 'css/lct-custom.css';?>">
 
 	<div class="bootstrap-iso">
-		<div class="container">
-			<div class="row">
-				<div class="lct-vertical-from">
-					<h3 class="lct-form-title">Compare Home Load</h3>
-					<form method="get" action="<?php echo site_url('/compare-rate/');?>">
-						<div class="form-group col-md-3">
-							<div class="row">
-								<div class="col-md-12">
-									<label class="lct-label" for="exampleInputEmail1">Loan amount</label>
-								</div>
-							</div>
-							<div class="row">
-								<div class="col-md-12">
-									<input type="text" class="form-control" name="amount" aria-describedby="emailHelp" placeholder="Enter amount">
-								</div>
-							</div>
-						 
-						</div>
-
-						<div class="form-group col-md-3">
-							<div class="row">
-								<div class="col-md-12">
-									<label class="lct-label" for="exampleFormControlSelect2">Purpose</label>
-								</div>
-							</div>
-							<div class="row">
-								<div class="col-md-12">
-									<select class="form-control" name="purpose" id="purpose">
-										<option value="OwnerOccupied">Owner Occupied</option>
-										<option value="Investment">Investment</option>
-									</select>
-								</div>
-							</div>
-
-						</div>
-
-						<div class="form-group col-md-3">
-							<div class="row">
-								<div class="col-md-12">
-									<label class="lct-label" for="state">State</label>
-								</div>
-							</div>
-							<div class="row">
-								<div class="col-md-12">
-									<select class="form-control" name="state" id="state">
-										<option value="ACT">Australian Capital Territory</option>
-										<option value="NSW">New South Wales</option>
-										<option value="NT ">Northern Territory</option>
-										<option value="QLD">Queensland</option>
-										<option value="SA ">South Australia</option>
-										<option value="TAS">Tasmania</option>
-										<option value="VIC">Victoria</option>
-										<option value="WA ">Western Australia</option>
-									</select>
-								</div>
-							</div>
-						
-						</div>
-
-						<div class="form-group col-md-3">
-							<div class="row">
-								<div class="col-md-12"> 	&nbsp;	&nbsp;	&nbsp;</div>
-							</div>
-							<div class="row">
-								<div class="col-md-12">
-									<input type="submit" class="btn btn-success btn-block" value="Search">
-								</div>
+		<div class="container-fluid">
+					<div class="lct-vertical-from">
+						<div class="row">
+							<div class="col-md-12">
+								<h3 class="lct-form-title" style="color: white; font-weight: bolder;">Compare Home Load</h3>
 							</div>
 							
-						</div>
+							<form method="get" action="<?php echo site_url('/compare-rate/');?>">
+								<div class="form-group col-md-3">
+									<div class="row">
+										<div class="col-md-12">
+											<label class="lct-label" for="exampleInputEmail1">Loan amount</label>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-md-12">
+											<input type="text" class="form-control" name="amount" aria-describedby="emailHelp" placeholder="Enter amount">
+										</div>
+									</div>
+								</div>
 
-					</form>					
-				</div>
+								<div class="form-group col-md-3">
+									<div class="row">
+										<div class="col-md-12">
+											<label class="lct-label" for="exampleFormControlSelect2">Purpose</label>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-md-12">
+											<select class="form-control" name="purpose" id="purpose">
+												<option value="OwnerOccupied">Owner Occupied</option>
+												<option value="Investment">Investment</option>
+											</select>
+										</div>
+									</div>
+								</div>
 
-			</div>			
+								<div class="form-group col-md-3">
+									<div class="row">
+										<div class="col-md-12">
+											<label class="lct-label" for="state">State</label>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-md-12">
+											<select class="form-control" name="state" id="state">
+												<option value="ACT">Australian Capital Territory</option>
+												<option value="NSW">New South Wales</option>
+												<option value="NT ">Northern Territory</option>
+												<option value="QLD">Queensland</option>
+												<option value="SA ">South Australia</option>
+												<option value="TAS">Tasmania</option>
+												<option value="VIC">Victoria</option>
+												<option value="WA ">Western Australia</option>
+											</select>
+										</div>
+									</div>
+								</div>
+
+								<div class="form-group col-md-3">
+									<div class="row">
+										<div class="col-md-12"> 	&nbsp;	&nbsp;	&nbsp;</div>
+									</div>
+									<div class="row">
+										<div class="col-md-12">
+											<input type="submit" class="btn btn-success btn-block" value="Search">
+										</div>
+									</div>
+								</div>
+							</form>
+						</div>					
+					</div>			
 		</div>
 
 	</div>
