@@ -139,84 +139,95 @@ function lct_show_search_result( $atts ){
 		        // check this address is his or not
 		        $rowcount = $wpdb->get_var("SELECT COUNT(*) ".$query_str);
 
-		            
-		            if(is_numeric($limit)){
-		                $limit = " LIMIT ".$limit;
-		            }else{
-		                $limit = "";
-		            }
+	            
+	            if(is_numeric($limit)){
+	                $limit = " LIMIT ".$limit;
+	            }else{
+	                $limit = "";
+	            }
 ?>
 
 <div class="bootstrap-iso">
 	<div class="container-fluid">
+
+		<div class="row">
+			<div class="col-md-8"></div>
+			<div class="col-md-4">
+				<div class="row">
+						<button  type="button" class="button" id="compare-selected">Compare</button>
+				</div>
+			</div>
+		</div>
+		<br>
+		<br>
 		<div class="row">
 			<div class="col-md-3">
 				<div class="panel panel-default">
 					<div class="panel-heading">Reverse Mortgage</div>
 					<div class="panel-body">
-							<label class="radio-inline"><input type="radio" value="Y" name="ReverseMortgage">Yes</label>
+							<label class="radio-inline"><input class="lct-filter" type="radio" value="Y" name="ReverseMortgage">Yes</label>
 								&nbsp;	&nbsp;
-							<label class="radio-inline"><input type="radio" value="N" name="ReverseMortgage">No</label>
+							<label class="radio-inline"><input class="lct-filter" type="radio" value="N" name="ReverseMortgage">No</label>
 					</div>
 				</div>
 				<br>
 				<div class="panel panel-default">
 					<div class="panel-heading">NoDoc</div>
 					<div class="panel-body">
-							<label class="radio-inline"><input type="radio" value="Y" name="NoDoc">Yes</label>
+							<label class="radio-inline"><input class="lct-filter" type="radio" value="Y" name="NoDoc">Yes</label>
 								&nbsp;	&nbsp;
-							<label class="radio-inline"><input type="radio" value="N" name="NoDoc">No</label>
+							<label class="radio-inline"><input class="lct-filter" type="radio" value="N" name="NoDoc">No</label>
 					</div>
 				</div>
 				<br>
 				<div class="panel panel-default">
 					<div class="panel-heading">LowDoc</div>
 					<div class="panel-body">
-							<label class="radio-inline"><input type="radio" value="Y" name="LowDoc">Yes</label>
+							<label class="radio-inline"><input class="lct-filter" type="radio" value="Y" name="LowDoc">Yes</label>
 								&nbsp;	&nbsp;
-							<label class="radio-inline"><input type="radio" value="N" name="LowDoc">No</label>
+							<label class="radio-inline"><input class="lct-filter" type="radio" value="N" name="LowDoc">No</label>
 					</div>
 				</div>
 				<br>
 				<div class="panel panel-default">
 					<div class="panel-heading">Equity</div>
 					<div class="panel-body">
-							<label class="radio-inline"><input type="radio" value="Y" name="Equity">Yes</label>
+							<label class="radio-inline"><input class="lct-filter" type="radio" value="Y" name="Equity">Yes</label>
 								&nbsp;	&nbsp;
-							<label class="radio-inline"><input type="radio" value="N" name="Equity">No</label>
+							<label class="radio-inline"><input class="lct-filter" type="radio" value="N" name="Equity">No</label>
 					</div>
 				</div>
 				<br>
 				<div class="panel panel-default">
 					<div class="panel-heading">CreditImpaired</div>
 					<div class="panel-body">
-							<label class="radio-inline"><input type="radio" value="Y" name="CreditImpaired">Yes</label>
+							<label class="radio-inline"><input class="lct-filter" type="radio" value="Y" name="CreditImpaired">Yes</label>
 								&nbsp;	&nbsp;
-							<label class="radio-inline"><input type="radio" value="N" name="CreditImpaired">No</label>
+							<label class="radio-inline"><input class="lct-filter" type="radio" value="N" name="CreditImpaired">No</label>
 					</div>
 				</div>
 				<br>
 				<div class="panel panel-default">
 					<div class="panel-heading">FixedRate</div>
 					<div class="panel-body">
-							<label class="radio-inline"><input type="radio" value="Y" name="FixedRate">Yes</label>
+							<label class="radio-inline"><input class="lct-filter" type="radio" value="Y" name="FixedRate">Yes</label>
 								&nbsp;	&nbsp;
-							<label class="radio-inline"><input type="radio" value="N" name="FixedRate">No</label>
+							<label class="radio-inline"><input class="lct-filter" type="radio" value="N" name="FixedRate">No</label>
 					</div>
 				</div>
 				<br>
 				<div class="panel panel-default">
 					<div class="panel-heading">FixedPeriod</div>
 					<div class="panel-body">
-							<label class="radio-inline"><input type="radio" value="1" name="FixedPeriod">1 Years</label>
+							<label class="radio-inline"><input class="lct-filter" type="radio" value="1" name="FixedPeriod">1 Years</label>
 							<br>
-							<label class="radio-inline"><input type="radio" value="2" name="FixedPeriod">2 Years</label>
+							<label class="radio-inline"><input class="lct-filter" type="radio" value="2" name="FixedPeriod">2 Years</label>
 							<br>
-							<label class="radio-inline"><input type="radio" value="3" name="FixedPeriod">3 Years</label>
+							<label class="radio-inline"><input class="lct-filter" type="radio" value="3" name="FixedPeriod">3 Years</label>
 							<br>
-							<label class="radio-inline"><input type="radio" value="4" name="FixedPeriod">4 Years</label>
+							<label class="radio-inline"><input class="lct-filter" type="radio" value="4" name="FixedPeriod">4 Years</label>
 							<br>
-							<label class="radio-inline"><input type="radio" value="5" name="FixedPeriod">5 Years</label>
+							<label class="radio-inline"><input class="lct-filter" type="radio" value="5" name="FixedPeriod">5 Years</label>
 					</div>
 				</div>
 				<br>
@@ -228,8 +239,9 @@ function lct_show_search_result( $atts ){
 					<div class="col-md-2">variable rate</div>
 					<div class="col-md-2">Fixed rate</div>
 					<div class="col-md-2">Comparison rate</div>
-					<div class="col-md-3"><button class="btn btn-warning btn-sm" id="compare-selected">Compare</button></div>
+					<div class="col-md-3">Select to compare</div>
 				</div>
+				<div class="search-result">
 			  	<?php
 		            $results = $wpdb->get_results("SELECT * ".$query_str.$limit, OBJECT);      
 		            foreach ($results as $result) {
@@ -246,7 +258,8 @@ function lct_show_search_result( $atts ){
        					}
 
 
-		        ?>
+		        ?>	
+		        	
            				<div class="row">
            					<div class="col-md-12 product-link">
            						<?php echo $current_Name;?>
@@ -258,12 +271,17 @@ function lct_show_search_result( $atts ){
 							<div class="col-md-2"><?php echo $result->FixedRate;?></div>
 							<div class="col-md-2"><?php echo $result->ComparisonRate;?></div>
 							<div class="col-md-3"><input type="checkbox" id="<?php echo $result->id;?>" class="checked-lender"></div>
-						</div>
-            	<?php } ?>		
+						</div>		        		
+		        	
+            	<?php } ?>
+        		</div>		
 			</div>
 		</div>			
 	</div>
 </div>
+<input type="hidden" id="hidden-amount" value="<?php echo $amount;?>">
+<input type="hidden" id="hidden-state" value="<?php echo $state;?>">
+<input type="hidden" id="hidden-purpose" value="<?php echo $purpose;?>">
 <?php
 	return ob_get_clean();
 }
@@ -279,14 +297,11 @@ function lct_compare_rate( $atts ){
 	<link rel="stylesheet" type="text/css" href="<?php echo plugin_dir_url( __FILE__ ) . 'css/lct-custom.css';?>">
 
 	<div class="bootstrap-iso">
-		<div class="container">
+		<div class="container-fluid">
 			<div class="row">
 			<?php
-
-
-
 				
-				/*get images*/
+
 				$lender_image_array = [];
 				query_posts(array( 
 				'post_type' => 'lender',
@@ -310,43 +325,150 @@ function lct_compare_rate( $atts ){
 
 
 	            // make other address NOT primary
-	            $results = $wpdb->get_results("SELECT * ".$query_str, OBJECT);      
-	            $output = '	<div class="bootstrap-iso">
-								<div class="container">
-									<div class="row">
-										<div class="col-md-3">Lender</div>
-										<div class="col-md-2">variable rate</div>
-										<div class="col-md-2">Fixed rate</div>
-										<div class="col-md-2">Comparison rate</div>
-									</div>';
+	            $results = $wpdb->get_results("SELECT * ".$query_str, ARRAY_A);   
+	            $result_count = count($results);
+	            if($result_count == 2){
+	            	$col = 4;
+	            }else{
+	            	$col = 3;
+	            }
 
-	            foreach ($results as $result) {
+	            /*get option from admin to show data*/
+	            $showing_options = rtrim(get_option('showing_options'), ',');
+	            $showing_options_array = explode(',', $showing_options);
 
-	               	$output .='<br><br>
-	               				<div class="row">
-	               					<div class="col-md-12"><h3>'.$result->Name.'<h3></div>
-               					</div>';
-	               					if (array_key_exists($result->Lender, $lender_image_array)) {
-	               						$current_lender = '<img class="img-responsive" src="'.$lender_image_array[$result->Lender].'">';
-	               					}else{
-	               						$current_lender = $result->Lender;
-	               					}
-	               	$output .='<div class="row">
-									<div class="col-md-3">'.$current_lender.'</div>
-									<div class="col-md-2">'.$result->VariableRate.'</div>
-									<div class="col-md-2">'.$result->FixedRate.'</div>
-									<div class="col-md-2">'.$result->ComparisonRate.'</div>
-								</div>
-								<hr>';
-	            }   
-	            echo $output;
-	            
             ?>
+			<div class="facet-compare gold-theme">
+			    <div class="comparison-header margin-top-50">
+			        <div id="toolbar">
+			            <div class="container-fluid">
+			                <div class="row">
+			                    <div class="alert alert-block alert-danger hidden" id="invalid">
+			                        <span>
+			                        </span>
+			                    </div>
+			                    <div class="functions col-xs-12">
+			                        <a href="#myModal" role="button" class="button" data-toggle="modal">Email Shortlist</a>
+			                    </div>
+			                </div>
+			            </div>
+			        </div>
+			    </div>
+
+
+	 
+				<!-- Modal HTML -->
+				<div id="myModal" class="modal fade">
+				    <div class="modal-dialog">
+				        <div class="modal-content">
+				            <div class="modal-header">
+				                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				                <h4 class="modal-title">Email Your Shortlist</h4>
+				            </div>
+
+							<div class="row">
+							    <div class="col-xs-12">
+									<div class="alert alert-success" style="display: none;">
+									  <strong>Success!</strong> Email successfully send.
+									</div>
+									<div class="alert alert-danger" style="display: none;">
+									  <strong>Error!</strong> Please try again.
+									</div>
+							    </div>
+							</div>
+
+				            <div class="modal-body">
+				            	<div class="form-group">
+				            		<label for="email">Email address:</label>
+				            		<input type="email" class="form-control" id="lct-email">
+				            	</div>
+				            	<div class="form-group">
+				            		<label for="pwd">Nmae:</label>
+				            		<input type="text" class="form-control" id="lct-name">
+				            	</div>
+				            </div>
+				            <div class="modal-footer">
+				                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				                <button type="button" class="btn btn-primary lct-send-email">Send email</button>
+				            </div>
+				        </div>
+				    </div>
+				</div>
+
+
+
+			    <div class="comparison-table-container col-xs-12 mortgages-abvariant-1">
+			        <div class="shortlist-heading row">
+			            <div class="col-xs-3">
+			                <h3>Home Loans</h3>
+			                <span>Shortlist</span>
+			            </div>
+			        </div>
+			        <div class="comparison-table two-products gold-theme">
+
+
+			            <div class="row comparison-row ">
+			                <div class="col-xs-<?php echo $col;?> comparison-item comparison-label company">
+			                </div>
+			                <div class="col-xs-<?php echo $col;?> comparison-item company">
+			                	<?php	if (array_key_exists($results[0]['Lender'], $lender_image_array)) {
+			       						echo $current_lender = '<img style="width: 145px;max-width: 145px;" class="img-responsive" src="'.$lender_image_array[$results[0]['Lender']].'" title="'.$lender_image_array[$results[0]['Lender']].'" alt="'.$lender_image_array[$results[0]['Lender']].'" value="'.$lender_image_array[$results[0]['Lender']].'">';
+			       					}else{
+			       						echo $current_lender = $results[0]['Lender'];
+			       					}
+		       					?>
+			                </div>
+			                <div class="col-xs-<?php echo $col;?> comparison-item company last">
+			                	<?php	if (array_key_exists($results[1]['Lender'], $lender_image_array)) {
+			       						echo $current_lender = '<img style="width: 145px;max-width: 145px;" class="img-responsive" src="'.$lender_image_array[$results[1]['Lender']].'" title="'.$lender_image_array[$results[1]['Lender']].'" alt="'.$lender_image_array[$results[1]['Lender']].'" value="'.$lender_image_array[$results[1]['Lender']].'">';
+			       					}else{
+			       						echo $current_lender = $results[1]['Lender'];
+			       					}
+		       					?>
+			                </div>
+			                <?php if($result_count==3){?>
+							<div class="col-xs-<?php echo $col;?> comparison-item company last">
+			                	<?php	if (array_key_exists($results[2]['Lender'], $lender_image_array)) {
+			       						echo $current_lender = '<img style="width: 145px;max-width: 145px;" class="img-responsive" src="'.$lender_image_array[$results[2]['Lender']].'" title="'.$lender_image_array[$results[2]['Lender']].'" alt="'.$lender_image_array[$results[2]['Lender']].'" value="'.$lender_image_array[$results[2]['Lender']].'">';
+			       					}else{
+			       						echo $current_lender = $results[2]['Lender'];
+			       					}
+		       					?>
+			                </div>
+			            	<?php } ?>
+			            </div>
+			            <div class="row comparison-row ">
+			                <div class="col-xs-<?php echo $col;?> comparison-item comparison-label loan-type">
+			                </div>
+			                <div class="col-xs-<?php echo $col;?> comparison-item loan-type">Variable</div>
+			                <div class="col-xs-<?php echo $col;?> comparison-item loan-type last">Variable</div>
+			                <?php if($result_count==3){?>
+			                <div class="col-xs-<?php echo $col;?> comparison-item loan-type last">Variable</div>
+			            	<?php } ?>
+			            </div>
+
+			            <?php $loop_count =1; ?>
+			            <?php foreach ($showing_options_array as $showing_options_single) { ?>
+				            <div class="row row-eq-height comparison-row <?php if($loop_count %2 ==1){ echo 'even';}else{ echo 'odd';}?> ">
+				                <div class="col-xs-<?php echo $col;?> comparison-item comparison-label "><?php echo get_option($showing_options_single);?></div>
+				                <div class="col-xs-<?php echo $col;?> comparison-item "><?php echo $results[0][$showing_options_single];?></div>
+				                <div class="col-xs-<?php echo $col;?> comparison-item  last"><?php echo $results[1][$showing_options_single];?></div>
+				                <?php if($result_count==3){?>
+				                <div class="col-xs-<?php echo $col;?> comparison-item  last"><?php echo $results[2][$showing_options_single];?></div>
+				            	<?php } ?>
+				            </div>
+				            <?php $loop_count++ ?>
+			            <?php } ?>
+			        </div>
+			    </div>
+
+
+
 			</div>			
 		</div>
 
 	</div>
-
+	<input type="hidden" id="hidden-ids" value="<?php echo $_GET['ids'];?>">
 <?php
 	return ob_get_clean();
 }

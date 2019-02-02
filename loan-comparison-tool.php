@@ -30,6 +30,8 @@ function lct_script_enqueuer() {
                             'ajax_nonce' => wp_create_nonce('ajax_csrf_check'),  
                         ));
     wp_enqueue_script('lct_js_front');
+    wp_enqueue_script( 'bootstrap', 'http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js', array('jquery'), '', false);
+    
 }
 // ajax in the admin end
 add_action( 'admin_enqueue_scripts', 'lct_script_enqueuer_admin');
@@ -55,6 +57,255 @@ function lct_scheduled_scarp() {
 	// do something every hour
     add_option( 'myhack_extraction_length', '255', '', 'yes' );
 }
+
+
+
+/*get search result with filter*/
+add_action( 'wp_ajax_lct_send_email', 'lct_send_email' );          //TO LOGGED USER
+add_action( 'wp_ajax_nopriv_lct_send_email', 'lct_send_email' );   //TO UNLOGGED USER
+function lct_send_email() {
+	ob_clean();  
+
+	$lender_image_array = [];
+	query_posts(array( 
+	'post_type' => 'lender',
+	'showposts' => -1
+	) );  
+
+	while (have_posts()) : the_post();
+		$lender_image_array[get_the_title()] = get_the_post_thumbnail_url(get_the_ID(),'full');
+	endwhile;
+
+
+    global $wpdb;
+    $table_name = $wpdb->prefix . 'lct_csv_datsdsa';
+
+    // variables
+	$ids = rtrim($_POST['ids'], ',');
+
+    $limit = get_option('lct_number_of_result_to_show');
+
+	$query_str = "FROM $table_name WHERE id in ($ids) ORDER By ComparisonRate ASC";
+
+
+    // make other address NOT primary
+    $results = $wpdb->get_results("SELECT * ".$query_str, ARRAY_A);   
+    $result_count = count($results);
+    if($result_count == 2){
+    	$col = 4;
+    }else{
+    	$col = 3;
+    }
+
+    /*get option from admin to show data*/
+    $showing_options = rtrim(get_option('showing_options'), ',');
+    $showing_options_array = explode(',', $showing_options);
+
+
+
+
+	$name = $_POST['name'];
+	$to = $_POST['email'];
+	$subject = "Loan Comparison Shortlist";
+
+	$str = '
+	<table  cellspacing="0" cellpadding="10" border="0">
+		<thead>
+			<tr>
+				<th></th>
+				<th>';
+	            	if (array_key_exists($results[0]['Lender'], $lender_image_array)) {
+	   						$str .= '<img style="width: 145px;max-width: 145px;" class="img-responsive" src="'.$lender_image_array[$results[0]['Lender']].'" title="'.$lender_image_array[$results[0]['Lender']].'" alt="'.$lender_image_array[$results[0]['Lender']].'" value="'.$lender_image_array[$results[0]['Lender']].'">';
+	   					}else{
+	   						$str .= $results[0]['Lender'];
+	   					}
+						
+				$str .= '
+				</th>
+				<th>';
+	            	if (array_key_exists($results[1]['Lender'], $lender_image_array)) {
+	   						$str .= '<img style="width: 145px;max-width: 145px;" class="img-responsive" src="'.$lender_image_array[$results[1]['Lender']].'" title="'.$lender_image_array[$results[1]['Lender']].'" alt="'.$lender_image_array[$results[1]['Lender']].'" value="'.$lender_image_array[$results[1]['Lender']].'">';
+	   					}else{
+	   						$str .= $results[1]['Lender'];
+	   					}
+					
+				$str .= '
+				</th>';
+	            if($result_count==3){
+				$str .= '
+				<th>';
+	            	if (array_key_exists($results[2]['Lender'], $lender_image_array)) {
+	   						$str .= '<img style="width: 145px;max-width: 145px;" class="img-responsive" src="'.$lender_image_array[$results[2]['Lender']].'" title="'.$lender_image_array[$results[2]['Lender']].'" alt="'.$lender_image_array[$results[2]['Lender']].'" value="'.$lender_image_array[$results[2]['Lender']].'">';
+	   					}else{
+	   						$str .= $results[2]['Lender'];
+	   					}
+	            $str .= '
+	            </th>';
+	        		} 
+			$str .= '
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td></td>
+				<td>Variable</td>
+				<td>Variable</td>
+				<td>Variable</td>
+			</tr>';
+	        $loop_count =1;
+	        foreach ($showing_options_array as $showing_options_single) {
+	            $str .= '<tr class="'; if($loop_count %2 ==1){ $str .= 'even';}else{ $str .= 'odd';} $str .= '">';
+	                $str .= '<td>'.get_option($showing_options_single).'</td>';
+	                $str .= '<td>'.$results[0][$showing_options_single].'</td>';
+	                $str .= '<td>'.$results[1][$showing_options_single].'</td>';
+	                if($result_count==3){
+	                $str .= '<td>'.$results[2][$showing_options_single].'</td>';
+	            	}
+	            $str .= '</tr>';
+	            $loop_count++;
+	        }
+		$str .= '</tbody>
+	</table>';
+
+
+	$message = "
+	<html>
+	<head>
+	<title>Loan Comparison Shortlist</title>
+	</head>
+	<body>
+	<h2>Loan Comparison Shortlist</h2>
+	".$str."
+	</body>
+	</html>
+	";
+
+	// Always set content-type when sending HTML email
+	$headers = "MIME-Version: 1.0" . "\r\n";
+	$headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
+
+	// More headers
+	$headers .= 'From: '.$name.' <info@erates.com.au>' . "\r\n";
+
+	// $headers .= 'From: <webmaster@example.com>' . "\r\n";
+	// $headers .= 'Cc: myboss@example.com' . "\r\n";
+
+	mail($to,$subject,$message,$headers);
+
+	echo 'done';
+	die();
+}
+
+/*get search result with filter*/
+add_action( 'wp_ajax_lct_data_search', 'lct_data_search' );          //TO LOGGED USER
+add_action( 'wp_ajax_nopriv_lct_data_search', 'lct_data_search' );   //TO UNLOGGED USER
+function lct_data_search() {  
+	ob_clean();           //TO CLEAN EXTRA SPACE
+	$output = '';
+	
+	/*get images*/
+	$lender_image_array = [];
+	query_posts(array( 
+	'post_type' => 'lender',
+	'showposts' => -1
+	) );  
+	while (have_posts()) : the_post();
+		$lender_image_array[get_the_title()] = get_the_post_thumbnail_url(get_the_ID(),'full');
+	endwhile;
+	wp_reset_postdata();
+	
+	/*get images*/
+	$product_array = [];
+	query_posts(array( 
+	'post_type' => 'product',
+	'showposts' => -1
+	) );  
+	while (have_posts()) : the_post();
+		$product_array[get_the_title()] = get_the_permalink();
+	endwhile;
+	wp_reset_postdata();
+
+    global $wpdb;
+    $table_name = $wpdb->prefix . 'lct_csv_datsdsa';
+
+    // variables
+    $amount = str_replace(',','',$_POST['amount']);
+	$state = $_POST['state'];
+	$purpose = $_POST['purpose'];
+	$ReverseMortgage = $_POST['ReverseMortgage'];
+	$NoDoc = $_POST['NoDoc'];
+	$LowDoc = $_POST['LowDoc'];
+	$Equity = $_POST['Equity'];
+	$CreditImpaired = $_POST['CreditImpaired'];
+	$FixedRate = $_POST['FixedRate'];
+	$FixedPeriod = $_POST['FixedPeriod']*12;
+
+
+	$query_str = "SELECT * FROM $table_name WHERE $state='Y' AND $purpose='Y' AND MinLoanAmount <= '$amount' And MaxLoanAmount >= '$amount'";
+	
+	if($ReverseMortgage !=null){
+		$query_str .= " AND ReverseMortgage='$ReverseMortgage'";
+	}
+	if($NoDoc !=null){
+		$query_str .= " AND NoDoc='$NoDoc'";
+	}
+	if($LowDoc !=null){
+		$query_str .= " AND LowDoc='$LowDoc'";
+	}
+	if($Equity !=null){
+		$query_str .= " AND Equity='$Equity'";
+	}
+	if($CreditImpaired !=null){
+		$query_str .= " AND CreditImpaired='$CreditImpaired'";
+	}
+	if($FixedRate !=null){
+		$query_str .= " AND FixedRate != ''";
+		// $query_str .= " AND FixedRate <= '$FixedRate' And FixedRate >= '$FixedRate'";
+	}
+	if($FixedPeriod !=null){
+		$query_str .= " AND FixedPeriod='$FixedPeriod'";
+	}
+
+
+	$query_str .= " ORDER By ComparisonRate ASC";
+    $limit = get_option('lct_number_of_result_to_show');
+    if(is_numeric($limit)){
+        $query_str .= " LIMIT ".$limit;
+    }
+    $results = $wpdb->get_results($query_str, OBJECT); 
+	
+    foreach ($results as $result) {
+		if (array_key_exists($result->Lender, $lender_image_array)) {
+			$current_lender = '<img style="height:50px; width:50px;" class="img-responsive" src="'.$lender_image_array[$result->Lender].'">';
+		}else{
+			$current_lender = $result->Lender;
+		}
+
+		if (array_key_exists($result->Name, $product_array)) {
+			$current_Name = '<a href="'.$product_array[$result->Name].'">'.$result->Name.'</a>';
+		}else{
+			$current_Name = '<a href="">'.$result->Name.'</a>';
+		}
+
+		$output .='
+   				<div class="row">
+   					<div class="col-md-12 product-link">
+   						'.$current_Name.'
+   					</div>
+					</div>
+       			<div class="row row-margin">
+					<div class="col-md-3">'.$current_lender.'</div>
+					<div class="col-md-2">'.$result->VariableRate.'</div>
+					<div class="col-md-2">'.$result->FixedRate.'</div>
+					<div class="col-md-2">'.$result->ComparisonRate.'</div>
+					<div class="col-md-3"><input type="checkbox" id="'.$result->id.'" class="checked-lender"></div>
+				</div>';	
+	}
+	echo $output;
+	die();		      //IT IS A MAST FOR WORDPRESS AJAX
+}
+
+
 
 /*get ajax result for available product*/
 add_action('wp_ajax_lct_get_available_product', 'lct_get_available_product');

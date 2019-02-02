@@ -17,7 +17,7 @@ function loan_menu(){
 function data_show_option(){
     global $wpdb;
     $message = "";
-    $options = ['productID','Name','Lender','LenderProductName','ProductDetails','VariableRate','FixedRate','FixedPeriod','IntroDiscRate','IntroDiscPeriod','ApplicationFees','DischargeFees','OngoingFees','OngoingFeesCycle','ValuationFees','LendersLegalFees','LendersSettlementFees','MinLoanAmount','MaxLoanAmount','LVROOPurchaseMin','LVROOPurchaseMax','LVROOSecurityMin','LVROOSecurityMax','LVRINVPurchaseMin','LVRINVPurchaseMax','LVRINVSecurityMin','LVRINVSecurityMax','LVRLandMin','LVRLandMax','OwnerOccupied','Investment','RepaymentOption','GenuineSavingsMin','ACT','NSW','TAS','QLD','VIC','SA','WA','NT','StandardVariable','Fixed','InterestInAdvance','ReverseMortgage','Basic','NoDoc','LowDoc','Equity','Intro','CreditImpaired','ProfessionalPack','MinLoanTerm','MaxLoanTerm','RateDetails','FeeDetails','AutoAppvdCCard','BpayAccess','DebitCardAvailable','DirectCreditAccess','DirectDebitAccess','EFTPOSAccess','GiroPostAustPostAccess','InternetBanking','LOCCreditCardAutoSweep','MortgageOffsetAvailable','PhoneTransferAccess','RedrawDetails','RedrawFacility','TransactionAccountAvailable','EarlyRepayBreakCostDetails','EarlyRepaymentBreakCosts','LMIAvailable','LMICapitalisationMaxLVR','RateLockAvailable','BridgingAvailable','Construction','SelfManagedSuperfund','InterestCapitalisation','InterestCapitalisationDetails','RepaymentsCanMakeExtra','RepaymentsFortnightly','RepaymentsMonthly','RepaymentsWeekly','SalaryDirectAvailable','Portability','SplitAvailable','SplitDetails','omparisonRate'];
+    $options = ['productID','Name','Lender','LenderProductName','ProductDetails','VariableRate','FixedRate','FixedPeriod','IntroDiscRate','IntroDiscPeriod','ApplicationFees','DischargeFees','OngoingFees','OngoingFeesCycle','ValuationFees','LendersLegalFees','LendersSettlementFees','MinLoanAmount','MaxLoanAmount','LVROOPurchaseMin','LVROOPurchaseMax','LVROOSecurityMin','LVROOSecurityMax','LVRINVPurchaseMin','LVRINVPurchaseMax','LVRINVSecurityMin','LVRINVSecurityMax','LVRLandMin','LVRLandMax','OwnerOccupied','Investment','RepaymentOption','GenuineSavingsMin','ACT','NSW','TAS','QLD','VIC','SA','WA','NT','StandardVariable','Fixed','InterestInAdvance','ReverseMortgage','Basic','NoDoc','LowDoc','Equity','Intro','CreditImpaired','ProfessionalPack','MinLoanTerm','MaxLoanTerm','RateDetails','FeeDetails','AutoAppvdCCard','BpayAccess','DebitCardAvailable','DirectCreditAccess','DirectDebitAccess','EFTPOSAccess','GiroPostAustPostAccess','InternetBanking','LOCCreditCardAutoSweep','MortgageOffsetAvailable','PhoneTransferAccess','RedrawDetails','RedrawFacility','TransactionAccountAvailable','EarlyRepayBreakCostDetails','EarlyRepaymentBreakCosts','LMIAvailable','LMICapitalisationMaxLVR','RateLockAvailable','BridgingAvailable','Construction','SelfManagedSuperfund','InterestCapitalisation','InterestCapitalisationDetails','RepaymentsCanMakeExtra','RepaymentsFortnightly','RepaymentsMonthly','RepaymentsWeekly','SalaryDirectAvailable','Portability','SplitAvailable','SplitDetails','ComparisonRate'];
 
 
 
@@ -25,6 +25,7 @@ function data_show_option(){
 
         //column name option
         foreach ($options as $option) {
+            // update_option( $option, $option);
             update_option( $option, $_POST[$option]);
         }
 
